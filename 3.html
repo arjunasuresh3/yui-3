@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
+    <script src="3.js"></script>
+
+    <script id="list-pies" type="text/x-handlebars-template">
+      <p>Pies Remaining:</p>
+      <ul>
+        {{#items}}
+            <li>{{slices}} slice(s) of {{type}} pie remaining. <button class="eat" pietype="{{type}}">Eat a Slice!</button></li>
+        {{/items}}
+      </ul>
+    </script>
+
+  </head>
+  <body class="yui3-skin-sam">
+    <div id="pies">
+    </div>
+    <div id="pieslisting">
+    </div>
+  </body>
+</html>
