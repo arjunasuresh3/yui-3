@@ -1,5 +1,5 @@
 // Create a new YUI instance and populate it with the required modules.
-YUI().use('model', 'model-list', 'view', 'handlebars', 'datatable', 'node-base', function (Y) {
+YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', function (Y) {
 
               var listing_source   = Y.one('#list-pies').getHTML(),
               listingtemplate = Y.Handlebars.compile(listing_source);
@@ -114,11 +114,11 @@ YUI().use('model', 'model-list', 'view', 'handlebars', 'datatable', 'node-base',
 
                                                 // The render function is responsible for rendering the view to the page. It
                                                 // will be called whenever the model changes.
-                                                render: function (container) {
-                                                    container = container||this.get('container');
-
+                                                render: function () {
+                                                    var container = this.get('container'),
+                                                    html = this.template({items:this.get('model').toJSON()});
                                                     // Render this view's HTML into the container element.
-                                                    container.setHTML(this.template({items:this.get('model').toJSON()}));
+                                                    container.setHTML(html);
 
                                                     return this;
                                                 },
