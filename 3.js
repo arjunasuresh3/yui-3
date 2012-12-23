@@ -37,8 +37,17 @@ YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', func
                                                  // attributes.
 
                                                  slices: {
-                                                     value: 6 // default value
+                                                     value: 6, // default value
                                                      // setter: "_sliceSetter"
+                                                     validator: function (value) {
+                                                         var ret_val = typeof value === 'number' && value >= 0 && value <= 10;
+                                                         if (!ret_val) {
+                                                             this.fire('error', {
+                                                                           type : 'eat',
+                                                                           error: "Oh snap! Enter no ranging from 1 to 10."
+                                                                       });
+                                                         }
+                                                     }
                                                  },
 
                                                  type: {
@@ -83,10 +92,10 @@ YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', func
 
                                                 // Specify delegated DOM events to attach to the container.
                                                 events: {
-                                                    '.eat': {click: 'eatSlice'}
+                                                    '.eat': {click: 'eatSlice'},
+                                                    '.addpies': {click: 'addSlice'}
                                                 },
                                                 
-
                                                 // Provide a template that will be used to render the view. The template can
                                                 // be anything we want, but in this case we'll use a string that will be
                                                 // processed with Y.Lang.sub().
@@ -102,12 +111,6 @@ YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', func
                                                     // list.
                                                     // modelList.after(['add', 'remove', 'reset'], this.render, this);
                                                     
-                                                    // We'll also re-render the view whenever the data of one of the models in
-                                                    // the list changes.
-                                                    // modelList.after('*:change', this.render, this);
-
-                                                    // Re-render this view when the modelList changes, and destroy this view when
-                                                    // the modelList is destroyed.
                                                     modelList.after('*:change', this.render, this);
                                                     modelList.after('*:destroy', this.render, this);
                                                 },
@@ -135,11 +138,24 @@ YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', func
                                                                                return m.get('type') === pietype;
                                                                            });
                                                     model.eatSlice();
-                                                    // this.render();
+                                                },
+
+                                                // The eatSlice function will handle click events on this view's "Eat a Slice"
+                                                // button.
+                                                addSlice: function (e) {
+                                                    // Call the pie model's eatSlice() function. This will consume a slice of
+                                                    // pie (if there are any left) and update the model, thus causing the view
+                                                    // to re-render to reflect the new model data.
+                                                    var pietype = e.target.getAttribute('pietype'), model;
+                                                    this.get('model').some(function(m){
+                                                                               model = m;
+                                                                               return m.get('type') === pietype;
+                                                                           });
+                                                    model.set('slices', parseInt(model.get('slices')) + parseInt(e.target.previous().get('value')));
                                                 }
+
                                             });
-              // var pies = new Y.PieList();
-              // var pie = new Y.PieModel({type: 'asd'}),
+
               var mypies = new Y.PieList(),
               myView = new Y.PieListView({model: mypies, container:'#pieslisting'});
 
@@ -154,12 +170,6 @@ YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', func
               
               // Save a model, then add it to the list.
               mypies.create({type: 'pumpkin'});
-
-              // Look up a model by its numeric index within the list.
-              // Y.log(pies.item(0));
-
-              // Y.log(pies.get('type'));
-              // Y.log(pies.get('slices'));
               myView.render();
 
               var table = new Y.DataTable({

@@ -8,7 +8,7 @@
       <p>Pies Remaining:</p>
       <ul>
         {{#items}}
-            <li>{{slices}} slice(s) of {{type}} pie remaining. <button class="eat" pietype="{{type}}">Eat a Slice!</button></li>
+            <li>{{slices}} slice(s) of {{type}} pie remaining. <button class="eat" pietype="{{type}}">Eat a Slice!</button>&nbsp;<b>Quantity</b><input type="text" pietype="{{type}}" name="quantity" /><button class="addpies" pietype="{{type}}">add Slices!!!</button></li>
         {{/items}}
       </ul>
     </script>
