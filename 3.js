@@ -47,6 +47,7 @@ YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', func
                                                                            error: "Oh snap! Enter no ranging from 1 to 10."
                                                                        });
                                                          }
+                                                         return ret_val;
                                                      }
                                                  },
 
@@ -113,6 +114,9 @@ YUI().use('node', 'model', 'model-list', 'view', 'handlebars', 'datatable', func
                                                     
                                                     modelList.after('*:change', this.render, this);
                                                     modelList.after('*:destroy', this.render, this);
+                                                    modelList.after('*:error', function(args){
+                                                                        Y.log(args);
+                                                                    }, this);
                                                 },
 
                                                 // The render function is responsible for rendering the view to the page. It
